@@ -35,14 +35,17 @@ class DoctorController extends Controller
         return view("admin.doctor.index", compact('doctors'));
     }
 
+
+
+
     public function fetch($id)
     {
         $doctor = Doctor::with("city", "department")->find($id);
         $carts = DB::select("SELECT cdh.*,
                     d.name AS doctor_name,
-                    h.name AS hospital_name, 
+                    h.name AS hospital_name,
                     h.address AS hospital_address,
-                    diag.name AS diagnostic_name, 
+                    diag.name AS diagnostic_name,
                     diag.address AS diagnostic_address
                 FROM chamber_diagnostic_hospitals cdh
                 JOIN doctors d ON d.id = cdh.doctor_id

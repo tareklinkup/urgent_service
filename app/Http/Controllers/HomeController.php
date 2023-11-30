@@ -65,6 +65,7 @@ class HomeController extends Controller
         }
         return view('hospital_details', compact("data", "total_hospital", "city_id"));
     }
+
     //diagnostic
     public function diagnostic($city_id = null)
     {
@@ -99,7 +100,7 @@ class HomeController extends Controller
         return view('ambulance_details', compact("data", 'type', 'city_id'));
     }
 
-    //ambulance
+    //private car
     public function privatecar($any = null)
     {
         $categories = Cartype::with('typewiseprivatecar')->latest()->get();
@@ -123,6 +124,31 @@ class HomeController extends Controller
         }
         $cartypes = Cartype::orderBy("name", "ASC")->get();
         return view('privatecar_details', compact("data", "cartypes", "categories", "type_id", "city_id"));
+    }
+
+    // truck
+    public function truck($any = null)
+    {
+        $categories = Cartype::with('typewiseprivatecar')->latest()->get();
+        $type_id = null;
+        $city_id = null;
+        if ($any != null) {
+            if ($any == 'type') {
+                $type_id .= $_GET['id'];
+                $data['privatecar'] = CategoryWisePrivatecar::with('privatecar', 'cartype')->where('cartype_id', $_GET['id'])->paginate(24);
+            } else if ($any == "city") {
+                $city_id .= $_GET['id'];
+                $data['privatecar'] = CategoryWisePrivatecar::with('privatecar', 'cartype')->get()->filter(function ($data) {
+                    return $data->privatecar->city_id == $_GET['id'];
+                });
+            } else {
+                return redirect("/");
+            }
+        } else {
+            $data['privatecar'] = CategoryWisePrivatecar::with('privatecar', 'cartype')->paginate(24);
+        }
+        $cartypes = Cartype::orderBy("name", "ASC")->get();
+        return view('truck_details', compact("data", "cartypes", "categories", "type_id", "city_id"));
     }
 
     // single doctor
@@ -150,10 +176,10 @@ class HomeController extends Controller
     {
         $carts = DB::select("SELECT cdh.*,
                     d.name AS doctor_name,
-                    h.name AS hospital_name, 
+                    h.name AS hospital_name,
                     h.address AS hospital_address,
                     h.discount_amount AS hospital_discount,
-                    diag.name AS diagnostic_name, 
+                    diag.name AS diagnostic_name,
                     diag.address AS diagnostic_address,
                     diag.discount_amount AS diagnostic_discount
                 FROM chamber_diagnostic_hospitals cdh

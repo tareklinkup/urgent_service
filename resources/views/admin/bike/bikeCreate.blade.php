@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Admin Privatecar Create Page')
+@section('title', 'Admin Bike Create Page')
 @push('js')
     <style>
         .cartype_id[data-select2-id='select2-data-cartype_id'] .select2-container {
@@ -13,19 +13,20 @@
             <div class="card">
                 <div class="card-heading text-end">
                     <div class="card-title">
-                        <a href="{{ route('admin.privatecar.index') }}" class="btn btn-danger px-3">Back To Home</a>
+                        <a href="{{ route('admin.bike.index') }}" class="btn btn-danger px-3">Back To Home</a>
                     </div>
                 </div>
                 <div class="card-body p-3">
-                    <form id="addPrivatecar">
+                    <form id="addBike">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="name">Privatecar Service Name</label>
+                                    <label for="name">Bike Service Name</label>
                                     <input type="text" name="name" id="name" class="form-control">
                                     <span class="error-name text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="username">Username</label>
@@ -33,6 +34,7 @@
                                     <span class="error-username text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="password">Password</label>
@@ -40,6 +42,7 @@
                                     <span class="error-password text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="email">Email</label>
@@ -48,6 +51,7 @@
                                     <span class="error-email text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Phone <span class="bg-dark rounded-pill text-white p-1"
@@ -62,7 +66,8 @@
                                     <span class="error-phone text-danger error"></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+
+                            {{-- <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="cartype_id">Type Of Privatecar</label>
                                     <div class="input-group">
@@ -76,7 +81,8 @@
                                     </div>
                                     <span class="error-cartype_id text-danger error"></span>
                                 </div>
-                            </div>
+                            </div> --}}
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="city_id">City Name</label>
@@ -90,6 +96,7 @@
                                 </div>
                                 <span class="error-city_id text-danger error"></span>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="upazila_id">Upazila Name</label>
@@ -99,6 +106,7 @@
                                 </div>
                                 <span class="error-upazila_id text-danger error"></span>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="address">Address</label>
@@ -106,6 +114,7 @@
                                     <span class="error-address text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="map_link">Map Link</label>
@@ -113,13 +122,15 @@
                                     <span class="error-map_link text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="car_license">Privatecar License</label>
+                                    <label for="car_license">Bike License</label>
                                     <input type="text" name="car_license" id="car_license" class="form-control">
                                     <span class="error-car_license text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="driver_license">Driving License</label>
@@ -128,6 +139,7 @@
                                     <span class="error-driver_license text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="driver_nid">Driver NID</label>
@@ -135,6 +147,7 @@
                                     <span class="error-driver_nid text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="driver_address">Driver Address</label>
@@ -143,6 +156,7 @@
                                     <span class="error-driver_address text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="number_of_seat">Number Of Seat</label>
@@ -151,9 +165,10 @@
                                     <span class="error-number_of_seat text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="image">Privatecar Image</label>
+                                    <label for="image">Bike Image</label>
                                     <input type="file" class="form-control" id="image" name="image"
                                         onchange="document.querySelector('.img').src = window.URL.createObjectURL(this.files[0])">
                                 </div>
@@ -162,12 +177,14 @@
                                 <img src="{{ asset('noimage.jpg') }}" class="img"
                                     style="width:100px;border: 1px solid #ccc; height:80px;">
                             </div>
+
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <textarea name="description" id="description"></textarea>
                                 </div>
                             </div>
+
                         </div>
                         <div class="form-group text-center mt-3">
                             <button type="submit" class="btn btn-success text-white text-uppercase px-3">Save</button>
@@ -179,7 +196,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -201,7 +218,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 
 @push('js')
@@ -210,28 +227,28 @@
         CKEDITOR.replace('description');
         $('.cartype_id').select2();
         $(document).ready(() => {
-            $("#addPrivatecar").on("submit", (event) => {
+            $("#addBike").on("submit", (event) => {
                 event.preventDefault()
                 var description = CKEDITOR.instances.description.getData();
                 var formdata = new FormData(event.target)
                 formdata.append("description", description)
 
                 $.ajax({
-                    url: "{{ route('admin.privatecar.store') }}",
+                    url: "{{ route('admin.bike.store') }}",
                     data: formdata,
                     method: "POST",
                     contentType: false,
                     processData: false,
                     beforeSend: () => {
-                        $("#addPrivatecar").find(".error").text("");
+                        $("#addBike").find(".error").text("");
                     },
                     success: (response) => {
                         if (response.error) {
                             $.each(response.error, (index, value) => {
-                                $("#addPrivatecar").find(".error-" + index).text(value);
+                                $("#addBike").find(".error-" + index).text(value);
                             })
                         } else {
-                            $("#addPrivatecar").trigger('reset')
+                            $("#addBike").trigger('reset')
                             $.notify(response, "success");
                         }
                     }

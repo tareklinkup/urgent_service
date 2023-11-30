@@ -2,44 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Privatecar;
+use App\Models\Bike;
 use App\Models\UserAccess;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\CategoryWisePrivatecar;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class PrivatecarController extends Controller
+class BikeController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:admin');
-    }
+    //
 
-    public function index()
+     public function create()
     {
-        $access = UserAccess::where('user_id', Auth::guard('admin')->user()->id)
-            ->pluck('permissions')
-            ->toArray();
-        if (!in_array("privatecar.index", $access)) {
-            return view("admin.unauthorize");
-        }
-
-        $privatecars = Privatecar::with('upazila', 'typewisecategory')->latest()->get();
-        return view("admin.privatecar.index", compact("privatecars"));
-    }
-
-    public function create()
-    {
-        return view("admin.privatecar.create");
+        return view('admin.bike.bikeCreate');
     }
 
     public function store(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(), [
                 "name"           => "required",
                 "username"       => "required|unique:privatecars",
@@ -58,7 +42,7 @@ class PrivatecarController extends Controller
             if ($validator->fails()) {
                 return response()->json(["error" => $validator->errors()]);
             } else {
-                $data                 = new Privatecar;
+                $data                 = new Bike;
                 $data->image          = $this->imageUpload($request, 'image', 'uploads/privatecar') ?? '';
                 $data->name           = $request->name;
                 $data->username       = $request->username;
@@ -77,30 +61,46 @@ class PrivatecarController extends Controller
                 $data->description    = $request->description;
                 $data->save();
 
-                foreach ($request->cartype_id as $item) {
-                    $categorywiseprivate                = new CategoryWisePrivatecar;
-                    $categorywiseprivate->privatecar_id = $data->id;
-                    $categorywiseprivate->cartype_id    = $item;
-                    $categorywiseprivate->save();
-                }
-                return response()->json("Privatecar added successfully");
+                // foreach ($request->cartype_id as $item) {
+                //     $categorywiseprivate                = new CategoryWisePrivatecar;
+                //     $categorywiseprivate->privatecar_id = $data->id;
+                //     $categorywiseprivate->cartype_id    = $item;
+                //     $categorywiseprivate->save();
+                // }
+
+                return response()->json("Bike added successfully");
             }
         } catch (\Throwable $e) {
             return response()->json("something went wrong");
         }
     }
 
+    public function index()
+    {
+        //  $access = UserAccess::where('user_id', Auth::guard('admin')->user()->id)
+        //     ->pluck('permissions')
+        //     ->toArray();
+
+        // if (!in_array("privatecar.index", $access)) {
+        //     return view("admin.unauthorize");
+        // }
+
+        $trucks = Bike::with('upazila')->latest()->get();
+        return view("admin.bike.index", compact("trucks"));
+
+    }
+
     public function edit($id)
     {
-        $data = Privatecar::find($id);
-        return view("admin.privatecar.edit", compact('data'));
+        $data = Bike::findOrFail($id);
+        return view('admin.bike.edit', compact("data"));
     }
 
     public function update(Request $request)
     {
         try {
 
-            $validator = Validator::make($request->all(), [
+             $validator = Validator::make($request->all(), [
                 "name"           => "required",
                 "username"       => "required|unique:privatecars,username," . $request->id,
                 "email"          => "required|email",
@@ -114,22 +114,24 @@ class PrivatecarController extends Controller
                 "driver_address" => "required",
             ]);
 
-            if ($validator->fails()) {
-                return response()->json(["error" => $validator->errors()]);
+            if($validator->fails()){
+                return response()->json(['error' => $validator->errors()]);
             } else {
-                $data = Privatecar::find($request->id);
-                $old = $data->image;
-                if ($request->hasFile('image')) {
-                    if (File::exists($old)) {
-                        File::delete($old);
+               $data = Bike::find($request->id);
+               $old_image = $data->image;
+
+               if($request->hasFile('image'))
+               {
+                    if(File::exists($old_image)){
+                        File::delete($old_image);
                     }
                     $data->image = $this->imageUpload($request, 'image', 'uploads/privatecar') ?? '';
-                }
+               }
 
-                $data->name           = $request->name;
-                $data->username       = $request->username;
+                $data->name   = $request->name;
+                $data->username = $request->username;
                 if (!empty($request->password)) {
-                    $data->password       = Hash::make($request->password);
+                    $data->password = Hash::make($request->password);
                 }
                 $data->email          = $request->email;
                 $data->phone          = implode(",", $request->phone);
@@ -144,41 +146,38 @@ class PrivatecarController extends Controller
                 $data->number_of_seat = $request->number_of_seat;
                 $data->description    = $request->description;
                 $data->update();
-
-                CategoryWisePrivatecar::where("privatecar_id", $request->id)->delete();
-                foreach ($request->cartype_id as $item) {
-                    $categorywiseprivate                = new CategoryWisePrivatecar;
-                    $categorywiseprivate->privatecar_id = $data->id;
-                    $categorywiseprivate->cartype_id    = $item;
-                    $categorywiseprivate->save();
-                }
-                return response()->json("Privatecar updated successfully");
+                return response()->json("Bike updated successfully");
             }
-        } catch (\Throwable $e) {
-            return response()->json("something went wrong" . $e->getMessage());
+
+
+        }catch(\Throwable $e)
+        {
+            return response()->json("Something went to Wrong" .$e->getMessage());
         }
     }
 
     public function destroy(Request $request)
     {
-        $access = UserAccess::where('user_id', Auth::guard('admin')->user()->id)
-            ->pluck('permissions')
-            ->toArray();
-        if (!in_array("privatecar.destroy", $access)) {
-            return view("admin.unauthorize");
-        }
+        // $access = UserAccess::where('user_id', Auth::guard('admin')->user()->id)
+        //     ->pluck('permissions')
+        //     ->toArray();
+        // if (!in_array("privatecar.destroy", $access)) {
+        //     return view("admin.unauthorize");
+        // }
 
         try {
-            $data = Privatecar::find($request->id);
+
+            $data = Bike::find($request->id);
             $old  = $data->image;
-            CategoryWisePrivatecar::where("privatecar_id", $request->id)->delete();
             if (File::exists($old)) {
                 File::delete($old);
             }
             $data->delete();
-            return response()->json("Privatecar Deleted successfully");
+            return response()->json("Bike Deleted successfully");
+
         } catch (\Throwable $e) {
             return response()->json("something went wrong");
         }
+
     }
 }

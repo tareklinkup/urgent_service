@@ -179,6 +179,25 @@ class PermissionSeeder extends Seeder
                     'user.destroy'
                 ]
             ],
+            [
+                'group_name' => 'truck',
+                'permission_name' => [
+                    'truck.index',
+                    'truck.create',
+                    'truck.edit',
+                    'truck.destroy'
+                ]
+            ],
+
+            [
+                'group_name' => 'bike',
+                'permission_name' => [
+                    'bike.index',
+                    'bike.create',
+                    'bike.edit',
+                    'bike.destroy'
+                ]
+            ],
         ];
 
         foreach ($permissions as $permission) {

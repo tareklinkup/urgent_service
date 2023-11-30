@@ -28,6 +28,7 @@ class CartypeController extends Controller
     public function store(Request $request)
     {
         try{
+
             $validator = Validator::make($request->all(), [
                 "name" => "required"
             ],["name.required" => "Cartype name required"]);
@@ -71,4 +72,4 @@ class CartypeController extends Controller
             return response()->json("something went wrong");
         }
     }
-} 
+}

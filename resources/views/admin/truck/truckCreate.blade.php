@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@section('title', 'Admin Privatecar Create Page')
+@section('title', 'Admin truck Create Page')
 @push('js')
     <style>
-        .cartype_id[data-select2-id='select2-data-cartype_id'] .select2-container {
+        .truckType_id[data-select2-id='select2-data-truckType_id'] .select2-container {
             width: 85% !important;
         }
     </style>
@@ -13,19 +13,21 @@
             <div class="card">
                 <div class="card-heading text-end">
                     <div class="card-title">
-                        <a href="{{ route('admin.privatecar.index') }}" class="btn btn-danger px-3">Back To Home</a>
+                        <a href="{{ route('admin.truck.index') }}" class="btn btn-danger px-3">Back To Home</a>
                     </div>
                 </div>
                 <div class="card-body p-3">
-                    <form id="addPrivatecar">
+                    <form id="addTruck">
                         <div class="row">
+
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="name">Privatecar Service Name</label>
+                                    <label for="name">Truck Service Name</label>
                                     <input type="text" name="name" id="name" class="form-control">
                                     <span class="error-name text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="username">Username</label>
@@ -33,6 +35,7 @@
                                     <span class="error-username text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="password">Password</label>
@@ -40,6 +43,7 @@
                                     <span class="error-password text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="email">Email</label>
@@ -48,6 +52,7 @@
                                     <span class="error-email text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Phone <span class="bg-dark rounded-pill text-white p-1"
@@ -62,26 +67,28 @@
                                     <span class="error-phone text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="cartype_id">Type Of Privatecar</label>
+                                    <label for="truckType_id">Type Of Truck</label>
                                     <div class="input-group">
-                                        <select multiple name="cartype_id[]" id="cartype_id"
-                                            class="form-control cartype_id">
-                                            @foreach (App\Models\Cartype::latest()->get() as $item)
+                                        <select multiple name="truckType_id[]" id="truckType_id"
+                                            class="form-control truckType_id">
+                                            @foreach (App\Models\TruckType::latest()->get() as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
-                                        <span onclick="PrivateCar(event)" class="btn btn-dark">+</span>
+                                        <span onclick="truck(event)" class="btn btn-dark">+</span>
                                     </div>
-                                    <span class="error-cartype_id text-danger error"></span>
+                                    <span class="error-truckType_id text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="city_id">City Name</label>
                                     <select onchange="getUpazila(event)" name="city_id" id="city_id"
-                                        class="form-control cartype_id">
+                                        class="form-control truckType_id">
                                         <option value="">Select City Name</option>
                                         @foreach ($cities as $city)
                                             <option value="{{ $city->id }}">{{ $city->name }}</option>
@@ -90,6 +97,7 @@
                                 </div>
                                 <span class="error-city_id text-danger error"></span>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="upazila_id">Upazila Name</label>
@@ -99,6 +107,7 @@
                                 </div>
                                 <span class="error-upazila_id text-danger error"></span>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="address">Address</label>
@@ -106,6 +115,7 @@
                                     <span class="error-address text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="map_link">Map Link</label>
@@ -113,13 +123,15 @@
                                     <span class="error-map_link text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="car_license">Privatecar License</label>
+                                    <label for="car_license">Truck License</label>
                                     <input type="text" name="car_license" id="car_license" class="form-control">
                                     <span class="error-car_license text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="driver_license">Driving License</label>
@@ -128,6 +140,7 @@
                                     <span class="error-driver_license text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="driver_nid">Driver NID</label>
@@ -135,6 +148,7 @@
                                     <span class="error-driver_nid text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="driver_address">Driver Address</label>
@@ -143,6 +157,7 @@
                                     <span class="error-driver_address text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="number_of_seat">Number Of Seat</label>
@@ -151,9 +166,10 @@
                                     <span class="error-number_of_seat text-danger error"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="image">Privatecar Image</label>
+                                    <label for="image">Truck Image</label>
                                     <input type="file" class="form-control" id="image" name="image"
                                         onchange="document.querySelector('.img').src = window.URL.createObjectURL(this.files[0])">
                                 </div>
@@ -183,13 +199,13 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Car Type Name</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Truck Type Name</h5>
                 </div>
-                <form id="formPrivatecar">
-                    <input type="hidden" name="car_id" id="car_id">
+                <form id="formTruck">
+                    <input type="hidden" name="truck_id" id="truck_id">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Car Type</label>
+                            <label for="name">Truck Type</label>
                             <input type="text" name="name" class="form-control" id="name">
                             <span class="error-name error text-danger"></span>
                         </div>
@@ -208,30 +224,30 @@
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('description');
-        $('.cartype_id').select2();
+        $('.truckType_id').select2();
         $(document).ready(() => {
-            $("#addPrivatecar").on("submit", (event) => {
+            $("#addTruck").on("submit", (event) => {
                 event.preventDefault()
                 var description = CKEDITOR.instances.description.getData();
                 var formdata = new FormData(event.target)
                 formdata.append("description", description)
 
                 $.ajax({
-                    url: "{{ route('admin.privatecar.store') }}",
+                    url: "{{ route('admin.truck.store') }}",
                     data: formdata,
                     method: "POST",
                     contentType: false,
                     processData: false,
                     beforeSend: () => {
-                        $("#addPrivatecar").find(".error").text("");
+                        $("#addTruck").find(".error").text("");
                     },
                     success: (response) => {
                         if (response.error) {
                             $.each(response.error, (index, value) => {
-                                $("#addPrivatecar").find(".error-" + index).text(value);
+                                $("#addTruck").find(".error-" + index).text(value);
                             })
                         } else {
-                            $("#addPrivatecar").trigger('reset')
+                            $("#addTruck").trigger('reset')
                             $.notify(response, "success");
                         }
                     }
@@ -239,34 +255,34 @@
             })
         })
 
-        function PrivateCar(event) {
+        function truck(event) {
             $("#myModal").modal("show")
         }
 
-        $("#formPrivatecar").on("submit", event => {
+        $("#formTruck").on("submit", event => {
             event.preventDefault()
-            var name = $("#myModal").find("#formPrivatecar #name").val()
-            var id = $("#myModal").find("#formPrivatecar #car_id").val()
+            var name = $("#myModal").find("#formTruck #name").val()
+            var id = $("#myModal").find("#formTruck #truck_id").val()
             $.ajax({
-                url: location.origin + "/admin/cartype",
+                url: location.origin + "/admin/truckType",
                 method: "POST",
                 data: {
-                    car_id: id,
+                    truck_id: id,
                     name: name
                 },
                 beforeSend: () => {
-                    $("#myModal").find("#formPrivatecar .error").text("")
+                    $("#myModal").find("#formTruck .error").text("")
                 },
                 success: res => {
                     if (res.error) {
                         $.each(res.error, (index, value) => {
-                            $("#myModal").find("#formPrivatecar .error-" + index).text(value)
+                            $("#myModal").find("#formTruck .error-" + index).text(value)
                         })
                     } else {
                         $("#myModal").modal("hide")
                         $.notify(res.msg, "success")
-                        $("#formPrivatecar").trigger('reset')
-                        $("#cartype_id").append(`<option value="${res.name}">${name}</option>`);
+                        $("#formTruck").trigger('reset')
+                        $("#truckType_id").append(`<option value="${res.name}">${name}</option>`);
                     }
                 }
             })

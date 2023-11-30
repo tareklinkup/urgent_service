@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{$setting->name}}</title>
+    <title>{{ $setting->name }}</title>
 
-    @include("layouts.frontend.style")
+    @include('layouts.frontend.style')
     <style>
         body {
             top: 0px !important;
@@ -74,21 +74,22 @@
 </head>
 
 <body class="antialiased position-relative">
-    <div class="Loading d-none" style="position: fixed;z-index: 99999;top: 0;left: 0;display: flex;justify-content: center;align-items: center;width: 100%;background: #ffffff85;">
-        <img src="{{asset('loading.gif')}}">
+    <div class="Loading d-none"
+        style="position: fixed;z-index: 99999;top: 0;left: 0;display: flex;justify-content: center;align-items: center;width: 100%;background: #ffffff85;">
+        <img src="{{ asset('loading.gif') }}">
     </div>
-    @include("layouts.frontend.navbar")
+    @include('layouts.frontend.navbar')
     <div class="container searchshow mt-4 d-none">
         <div class="row d-flex justify-content-center doctor_details">
         </div>
     </div>
     <main>
-        @yield("content")
+        @yield('content')
     </main>
     <!-- footer section -->
-    @include("layouts.frontend.footer")
+    @include('layouts.frontend.footer')
 
-    @include("layouts.frontend.script")
+    @include('layouts.frontend.script')
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -115,6 +116,7 @@
             event.preventDefault();
             var formdata = new FormData(event.target)
             var selectName = $("#services").val();
+
             if (selectName == '') {
                 alert("Must be select service")
                 return
@@ -122,27 +124,27 @@
             var url;
             var formdata;
             if (selectName == "Doctor") {
-                url = "{{route('filter.doctor')}}"
+                url = "{{ route('filter.doctor') }}"
                 formdata = {
                     doctor_name: $(".searchName").val()
                 }
             } else if (selectName == "Hospital") {
-                url = "{{route('filter.hospital')}}"
+                url = "{{ route('filter.hospital') }}"
                 formdata = {
                     hospital_name: $(".searchName").val()
                 }
             } else if (selectName == "Diagnostic") {
-                url = "{{route('filter.diagnostic')}}"
+                url = "{{ route('filter.diagnostic') }}"
                 formdata = {
                     diagnostic_name: $(".searchName").val()
                 }
             } else if (selectName == "Ambulance") {
-                url = "{{route('filter.ambulance')}}"
+                url = "{{ route('filter.ambulance') }}"
                 formdata = {
                     ambulance_name: $(".searchName").val()
                 }
             } else {
-                url = "{{route('filter.privatecar')}}"
+                url = "{{ route('filter.privatecar') }}"
                 formdata = {
                     privatecar_name: $(".searchName").val()
                 }
@@ -316,6 +318,8 @@
         })();
     </script>
     <!--End of Tawk.to Script-->
+
+    @stack('web_script');
 </body>
 
 </html>

@@ -32,6 +32,60 @@ class FilterController extends Controller
         }
     }
 
+
+    public function getDoctor(Request $request)
+    {
+        $request->validate([
+            'search' => 'required'
+        ]);
+
+        $doctor = Doctor::where("name", "LIKE", "%".$request->search."%")
+                            ->orWhere("education", "LIKE", "%".$request->search."%")
+                            ->orWhere("description", "LIKE", "%".$request->search."%")
+                            ->take(15)->get();
+        return $doctor;
+    }
+
+    public function getAmbulance(Request $request)
+    {
+        $request->validate([
+            'search' => 'required'
+        ]);
+
+        $ambulance = Ambulance::where("name", "LIKE", "%".$request->search."%")
+                            ->orWhere("address", "LIKE", "%".$request->search."%")
+                            ->orWhere("description", "LIKE", "%".$request->search."%")
+                            ->take(10)->get();
+        return $ambulance;
+    }
+
+    public function getCar(Request $request)
+    {
+        $request->validate([
+            'search' => 'required'
+        ]);
+
+        $car = Privatecar::where("name", "LIKE", "%".$request->search."%")
+                            ->orWhere("driver_address", "LIKE", "%".$request->search."%")
+                            ->orWhere("description", "LIKE", "%".$request->search."%")
+                            ->take(10)->get();
+        return $car;
+    }
+
+    public function diagnosticGet(Request $request)
+    {
+        $request->validate([
+            'search' => 'required'
+        ]);
+
+        $diagnostic = Diagnostic::where("name", "LIKE", "%".$request->search."%")
+                            ->orWhere("address", "LIKE", "%".$request->search."%")
+                            ->orWhere("description", "LIKE", "%".$request->search."%")
+                            ->take(10)->get();
+        return $diagnostic;
+    }
+
+
     public function doctor(Request $request)
     {
         try {
@@ -138,7 +192,7 @@ class FilterController extends Controller
                                         diag.image,
                                     d.name as city_name
                                     FROM diagnostics diag
-                                    LEFT JOIN districts d ON d.id = diag.city_id 
+                                    LEFT JOIN districts d ON d.id = diag.city_id
                                     WHERE 1 = 1 $clauses ORDER BY diag.name ASC");
 
             $data = ["status" => true, "message" => $diagnostic];
@@ -167,7 +221,7 @@ class FilterController extends Controller
                                         amb.*,
                                     d.name as city_name
                                     FROM ambulances amb
-                                    LEFT JOIN districts d ON d.id = amb.city_id 
+                                    LEFT JOIN districts d ON d.id = amb.city_id
                                     WHERE 1 = 1 $clauses ORDER BY amb.name ASC");
 
             $data = ["status" => true, "message" => $ambulance];
@@ -217,6 +271,47 @@ class FilterController extends Controller
             return $data;
         }
     }
+
+    // truck
+
+        public function truck(Request $request)
+    {
+        try {
+            $clauses = "";
+            if (!empty($request->city)) {
+                $clauses .= " AND p.city_id='$request->city'";
+            }
+            if (!empty($request->truck_name)) {
+                $clauses .= " AND p.name LIKE '%$request->truck_name%'";
+            }
+
+            // if (!empty($request->privatecar_type)) {
+            //     $clauses .= " AND cwp.cartype_id='$request->privatecar_type'";
+            // }
+
+            $truck = DB::select("SELECT
+                                        t.*,
+                                        t.id as truck_id,
+                                        t.name,
+                                        t.username,
+                                        t.phone,
+                                        t.email,
+                                        t.city_id,
+                                        t.address,
+                                        t.image,
+                                        d.name as city_name
+                                    FROM truck_rents t
+                                    LEFT JOIN districts d ON d.id = t.city_id
+                                    WHERE 1 = 1 $clauses ORDER BY t.name ASC");
+
+            $data = ["status" => true, "message" => $truck];
+            return $data;
+        } catch (\Throwable $th) {
+            $data = ["status" => false, "message" => $th->getMessage()];
+            return $data;
+        }
+    }
+
     public function hospital(Request $request)
     {
         try {
@@ -242,7 +337,7 @@ class FilterController extends Controller
                                         hosp.image,
                                     d.name as city_name
                                     FROM hospitals hosp
-                                    LEFT JOIN districts d ON d.id = hosp.city_id 
+                                    LEFT JOIN districts d ON d.id = hosp.city_id
                                     WHERE 1 = 1 $clauses ORDER BY hosp.name ASC");
 
             $data = ["status" => true, "message" => $hospital];
@@ -252,6 +347,22 @@ class FilterController extends Controller
             return $data;
         }
     }
+
+    public function getHospital(Request $request)
+    {
+         $request->validate([
+            'search' => 'required'
+        ]);
+
+        $hospital = Hospital::where("name", "LIKE", "%".$request->search."%")
+                            ->orWhere("hospital_type", "LIKE", "%".$request->search."%")
+                            ->orWhere("address", "LIKE", "%".$request->search."%")
+                             ->orWhere("description", "LIKE", "%".$request->search."%")
+                            ->take(10)->get();
+        return $hospital;
+    }
+
+
     public function hospitaldiagnosticdoctor(Request $request)
     {
         try {

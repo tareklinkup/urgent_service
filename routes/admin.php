@@ -14,14 +14,18 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UpazilaController;
 use App\Http\Controllers\Admin\HospitalController;
 use App\Http\Controllers\Admin\AmbulanceController;
+use App\Http\Controllers\Admin\BikeController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\DiagnosticController;
 use App\Http\Controllers\Admin\PrivatecarController;
 use App\Http\Controllers\Admin\UserAccessController;
 use App\Http\Controllers\Admin\InvestigationController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\TruckRentController;
+use App\Http\Controllers\TruckTypeController;
 
 //admin authentication
+
 Route::group(['prefix' => 'admin'], function () {
     Route::get("/", [LoginController::class, 'showAdminLoginForm']);
     Route::post("/login", [LoginController::class, "adminLogin"])->name("admin.login");
@@ -45,6 +49,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get("/doctor-fetch/{id}", [DoctorController::class, 'fetch'])->name("admin.doctor.fetch");
     Route::post("/doctor-update", [DoctorController::class, 'update'])->name("admin.doctor.update");
     Route::post("/doctor-delete", [DoctorController::class, 'destroy'])->name("admin.doctor.destroy");
+
+
     // chamber remove
     Route::get("/doctor/chamber-delete/{id}", [DoctorController::class, 'Chamber_Destroy']);
     // hospital route
@@ -77,6 +83,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get("/cartype/{id}/edit", [CartypeController::class, "edit"])->name("cartype.edit");
     Route::post("/cartype", [CartypeController::class, "store"])->name("cartype.store");
     Route::post("/cartype/delete", [CartypeController::class, "destroy"])->name("cartype.destroy");
+
+    // Truck Type Route
+    Route::post("/truckType", [TruckTypeController::class, "store"])->name("truckType.store");
+
     // ambulance route
     Route::get("/privatecar", [PrivatecarController::class, 'index'])->name("admin.privatecar.index");
     Route::get("/privatecar-create", [PrivatecarController::class, 'create'])->name("admin.privatecar.create");
@@ -84,6 +94,24 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get("/privatecar-edit/{id}", [PrivatecarController::class, 'edit'])->name("admin.privatecar.edit");
     Route::post("/privatecar-update", [PrivatecarController::class, 'update'])->name("admin.privatecar.update");
     Route::post("/privatecar-delete", [PrivatecarController::class, 'destroy'])->name("admin.privatecar.destroy");
+
+
+    // Truck route
+    Route::get("/truck-rent", [TruckRentController::class, 'index'])->name("admin.truck.index");
+    Route::get("/truck-rent-create", [TruckRentController::class, 'create'])->name("admin.truck.create");
+    Route::post("/truck-rent", [TruckRentController::class, 'store'])->name("admin.truck.store");
+    Route::get("/truck-rent-edit/{id}", [TruckRentController::class, 'edit'])->name("admin.truck.edit");
+    Route::post("/truck-rent-update", [TruckRentController::class, 'update'])->name("admin.truck.update");
+    Route::post("/truck-rent-delete", [TruckRentController::class, 'destroy'])->name("admin.truck.destroy");
+
+    // Bike route
+    Route::get("/bike", [BikeController::class, 'index'])->name("admin.bike.index");
+    Route::get("/bike-create", [BikeController::class, 'create'])->name("admin.bike.create");
+    Route::post("/bike", [BikeController::class, 'store'])->name("admin.bike.store");
+    Route::get("/bike-edit/{id}", [BikeController::class, 'edit'])->name("admin.bike.edit");
+    Route::post("/bike-update", [BikeController::class, 'update'])->name("admin.bike.update");
+    Route::post("/bike-delete", [BikeController::class, 'destroy'])->name("admin.bike.destroy");
+
     //contact route
     Route::get("/contact", [ContactController::class, "index"])->name("admin.contact.index");
     Route::post("/contact", [ContactController::class, "store"])->name("admin.contact.store");

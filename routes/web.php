@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\AppoinmentController;
+use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HireAmbulanceController;
 use App\Http\Controllers\CompanyContactController;
@@ -30,10 +31,16 @@ Route::post("/filter-doctorsinglechange", [FilterController::class, "doctorsingl
 Route::post("/filter-diagnostic", [FilterController::class, "diagnostic"])->name("filter.diagnostic");
 Route::post("/filter-ambulance", [FilterController::class, "ambulance"])->name("filter.ambulance");
 Route::post("/filter-privatecar", [FilterController::class, "privatecar"])->name("filter.privatecar");
+Route::post("/filter-truck", [FilterController::class, "truck"])->name("filter.truck");
 Route::get("/get/city/all", [FilterController::class, "cityall"])->name("get.city.all");
 Route::post("/home-filter", [HomeController::class, "filter"])->name("home.filter");
 Route::get("/getupazila/{id}", [HomeController::class, "getupazila"]);
-Route::post("/donor-filter", [FilterController::class, "filterdonor"])->name("filter.donor");
+// Route::post("/donor-filter", [FilterController::class, "filterdonor"])->name("filter.donor");
+Route::post("/doctor-get", [FilterController::class, 'getDoctor'])->name('doctor-gets');
+Route::post("/hospital-get", [FilterController::class, 'getHospital'])->name('hospital-get');
+Route::post("/diagnostic-get", [FilterController::class, 'diagnosticGet'])->name('diagnostic-get');
+Route::post("/ambulance-get", [FilterController::class, 'getAmbulance'])->name('/ambulance-get');
+Route::post("/private-car", [FilterController::class, 'getCar'])->name('/private-car');
 
 // =========== Frontend route ========= //
 Route::get("/", [HomeController::class, "index"])->name("website");
@@ -42,6 +49,9 @@ Route::get("/hospital-details/{city?}", [HomeController::class, "hospital"])->na
 Route::get("/diagnostic-details/{city?}", [HomeController::class, "diagnostic"])->name("diagnostic.details");
 Route::get("/ambulance-details/{type?}", [HomeController::class, "ambulance"])->name("ambulance.details");
 Route::get("/privatecar-details/{type?}", [HomeController::class, "privatecar"])->name("privatecar.details");
+Route::get("/truck-details/{type?}", [HomeController::class, "truck"])->name("truck.details");
+Route::get("/bike-details/{type?}", [HomeController::class, "bike"])->name("bike.details");
+
 Route::get("/single-details-doctor/{id}", [HomeController::class, "singledoctor"])->name("singlepagedoctor");
 Route::get("/single-details-hospital/{id}", [HomeController::class, "singlehospital"])->name("singlepagehospital");
 Route::get("/single-details-diagnostic/{id}", [HomeController::class, "singlediagnostic"])->name("singlepagediagnostic");

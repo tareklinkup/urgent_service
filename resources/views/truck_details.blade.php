@@ -37,7 +37,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-10">
+                                {{-- <div class="col-md-3 col-10">
                                     <div class="form-group">
                                         <label for="privatecar_type" class="d-md-block d-none">Type Of Car</label>
                                         <select class="rounded-pill" name="privatecar_type" id="privatecar_type">
@@ -47,12 +47,12 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-3 col-10">
                                     <div class="form-group">
-                                        <label for="privatecar_name" class="d-md-block d-none">Car Name</label>
-                                        <input type="text" name="privatecar_name" id="privatecar_name"
-                                            class="form-control" autocomplete="off"
+                                        <label for="truck_name" class="d-md-block d-none">Truck Name</label>
+                                        <input type="text" name="truck_name" id="truck_name" class="form-control"
+                                            autocomplete="off"
                                             style="height: 33px;border-radius: 2rem;background: black;border: 0;box-shadow: none;color: #a3a3a3;padding-left: 18px;padding-top: 3px;">
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
                                     </div>
                                     <div class="info" style="padding-right:5px;">
                                         <h6>${value.name}</h6>
-                                        <p style="color:#c99913;">${value.cartype}, ${value.city_name}</p>
+                                        <p style="color:#c99913;"> ${value.city_name}</p>
                                         <p style="border-top: 2px dashed #dddddd85;text-align:justify;"><i class="fa fa-map-marker"></i> ${value.address}</p>
                                     </div>
                                 </div>
@@ -171,9 +171,9 @@
 
         $("#filterPrivatecar").on("submit", (event) => {
             event.preventDefault();
-            var formdata = new FormData(event.target)
+            var formdata = new FormData(event.target);
             $.ajax({
-                url: "{{ route('filter.privatecar') }}",
+                url: "{{ route('filter.truck') }}",
                 method: "POST",
                 data: formdata,
                 contentType: false,
